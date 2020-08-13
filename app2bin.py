@@ -10,7 +10,7 @@ import util
 from wad import DLCWAD
 
 def main(raw_option=None, console_id=None, pack_key=None):	
-	print('Rock Band 3 DLC Packer')
+	print('Rock Band 3 .BIN Packer')
 
 	if not raw_option:
 		raw_option = input('\nTitle string: ')
