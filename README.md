@@ -11,6 +11,13 @@ If you're new to python: `pip install pycryptodome`
 
 ## TODO: proper documentation
 
+### add-unpacked.py
+
+Renames unpacked directories (`000_00000000_songname_meta`, `000_00000000_songname_song`) to correct indexes and modifies songs.dta location (`dlc/sZAE/000/content/songs`) to correct title and index.
+
+Add directories in `files-unpacked/sZXX` (except use the title you want to add: sZGE, sZGP, etc)
+
+Run packer `python add-unpacked.py sZGE` and directories in `files-unpacked/sZGE` will be renamed and songs.dta modified
 
 ### pack.py
 
