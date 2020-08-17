@@ -27,6 +27,7 @@ def main(raw_option=None):
 	dir_list.sort()
 
 	songs = []
+	u8 = U8()
 
 	for v in dir_list:
 		split_name = v.split('_')
@@ -54,29 +55,24 @@ def main(raw_option=None):
 			print(songs[i+1]['dir'])
 			return
 
-		u8 = U8()
 		path_in = os.path.join(in_dir, songs[i]['dir'])
 		file_out = util.get_hex_str(songs[i]['index'], 4) + '.app'
 		path_out = os.path.join(out_dir, file_out)
-		print('' + songs[i]['dir'] + ' > ' + file_out)
-		u8.write(path_out, path_in)
+		if os.path.isfile(path_out):
+			print(songs[i]['dir'] + ' > ' + file_out + ' EXISTS, SKIPPING!')
+		else:
+			print(songs[i]['dir'] + ' > ' + file_out)
+			u8.write(path_out, path_in)
 
 		i += 1
 		path_in = os.path.join(in_dir, songs[i]['dir'])
 		file_out = util.get_hex_str(songs[i]['index'], 4) + '.app'
 		path_out = os.path.join(out_dir, file_out)
-		print('' + songs[i]['dir'] + ' > ' + file_out)
-		u8.write(path_out, path_in)
-
-		
-	# create or read/fix tmd
-	if os.path.isfile(tmd_filepath):
-		pass
-	else:
-		pass
-
-
-
+		if os.path.isfile(path_out):
+			print(songs[i]['dir'] + ' > ' + file_out + ' EXISTS, SKIPPING!')
+		else:
+			print(songs[i]['dir'] + ' > ' + file_out)
+			u8.write(path_out, path_in)
 
 
 if __name__ == "__main__":

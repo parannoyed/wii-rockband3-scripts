@@ -10,7 +10,7 @@ If you're new to python: `pip install pycryptodome`
 
 ## Overview
 
-Put your directories (`000_00000000_songname_meta`, `000_00000000_songname_song`) in `files-unpacked/sZGE`. Run `python add-unpacked.py sZGE` to rename and edit `songs.dta`. Using "merged" customs (multiple songs) hasn't been tested and probably isn't working yet.
+Put your directories (`000_00000000_songname_meta`, `000_00000000_songname_song`) in `files-unpacked/sZGE`. Run `python add-unpacked.py sZGE` to rename directories and edit `songs.dta`. Using "merged" customs (multiple songs) hasn't been tested and probably isn't working yet.
 
 Run `python unpacked2app.py sZGE` and .app files will be written in `files-app/sZGE`.
 
