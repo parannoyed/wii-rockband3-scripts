@@ -45,6 +45,56 @@ class TMD:
 			'sha1_hash': 20
 		}
 
+		def __init__(self, data=None):
+			super().__init_subclass__()
+			if isinstance(data, bytes):
+				self.set_data(data)
+
+	def add_content(self, content_id, index=None, type='0001', size=None, sha1_hash=None, data=None):
+		if data:
+			if size is None:
+				size = len(data)
+				print(size)
+			if sha1_hash is None:
+				sha1_hash = crypto.get_hash(data)
+
+		if isinstance(content_id, str):
+			content_id = util.str2byte(content_id)
+		elif isinstance(content_id, int):
+			content_id = util.int2byte(content_id, self.Content.structure['content_id'])
+
+		if index is None:
+			index = len(self.contents)
+		if isinstance(index, int):
+			index = util.int2byte(index, self.Content.structure['index'])
+
+		if isinstance(type, str):
+			type = util.str2byte(type)
+		elif isinstance(type, int):
+			type = util.int2byte(type, self.Content.structure['type'])
+
+		if size:
+			if isinstance(size, int):
+				size = util.int2byte(size, self.Content.structure['size'])
+		else:
+			size = util.int2byte(0, self.Content.structure['size'])
+
+		if sha1_hash is None:
+			sha1_hash = b'\x00' * self.Content.structure['sha1_hash']
+
+		content = self.Content(content_id + index + type + size + sha1_hash)
+
+		i = util.byte2int(index)
+		# we have missing entries that need filling before we can be added
+		if i > len(self.contents):
+			self.add_content('00000000', i - 1)
+		# add new
+		if i == len(self.contents):
+			self.contents.append(content)
+		# replace existsing
+		elif i < len(self.contents):
+			self.contents[i] = content
+		return content
 
 	def check_hash(self, index, data):
 		return crypto.check_hash(data, self.contents[index].sha1_hash)
@@ -80,6 +130,9 @@ class TMD:
 	def get_contents_size(self):
 		return calcsize(util.pack_format(self.Content.structure)) * len(self.contents)
 
+	def get_number_contents(self):
+		return util.int2byte(len(self.contents), self.Header.structure['number_contents'])
+
 	def get_short_title_id(self):
 		return self.header.title_id[-4:].decode()
 
@@ -91,6 +144,7 @@ class TMD:
 
 	def get_packed(self):
 		packed = b''
+		self.header.number_contents = self.get_number_contents()
 		packed += self.header.get_packed()
 		for i in range(len(self.contents)):
 			packed += self.contents[i].get_packed()
