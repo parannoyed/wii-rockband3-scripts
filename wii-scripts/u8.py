@@ -187,7 +187,8 @@ class U8:
 				pad_by = util.pad_by(len(packed), 64)
 				packed += b'\x00' * pad_by
 		# remove padding from last file
-		packed = packed[:-pad_by]
+		if pad_by:
+			packed = packed[:-pad_by]
 		return packed
 
 	def get_string_table(self):

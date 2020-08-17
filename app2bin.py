@@ -68,10 +68,13 @@ def main(raw_option=None, console_id=None, pack_key=None):
 			else:
 				print('FAILED!')
 
-			bin = DLCWAD(key=pack_key)
-			bin.create(data, 'SZB' + region, i, tmd, console_id)
-			print('File:  ' + binfilename + ', Size: ' + str(bin.get_file_size()) + ' bytes')
-			bin.write(binfilepath)
+			if os.path.isfile(binfilepath):
+				print('SKIP:  ' + binfilename + ', FILE ALREADY EXISTS!')
+			else:
+				bin = DLCWAD(key=pack_key)
+				bin.create(data, 'SZB' + region, i, tmd, console_id)
+				print('File:  ' + binfilename + ', Size: ' + str(bin.get_file_size()) + ' bytes')
+				bin.write(binfilepath)
 	
 if __name__ == "__main__":
 	parser = ArgumentParser()
