@@ -39,6 +39,12 @@ Copy .app files and title.tmd into `files-app/sZXX` (except use the title you wa
 
 Run `python app2bin.py sZGE` and .bin files will be written in `files-bin/sZGE`
 
+### app2spreadsheet.py
+
+Creates a .csv file from .app files.
+Lists 'Path', 'APP', 'BIN', 'Artist', 'Song', 'Album', 'Year', 'Genre', 'Origin'
+Saves as `app2spreadsheet.csv`
+
 ### dta.py
 
 Basic DTA file parser. Based on https://github.com/RBTools/CON-Tools "C3 Tools/DTAParser.cs"
