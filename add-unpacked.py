@@ -48,10 +48,12 @@ def main(raw_option=None):
 					'name': song_name
 				})
 	
-	for v in songs_old:
-		print('Existing song: ' + v['dir'])
-
-	cur_index = songs_old[-1]['index'] + 1
+	if songs_old:
+		for v in songs_old:
+			print('Existing song: ' + v['dir'])
+		cur_index = songs_old[-1]['index'] + 1
+	else:
+		cur_index = 1
 
 	for i in range(0, len(songs_new), 2):
 		if songs_new[i]['name'] != songs_new[i+1]['name']:
