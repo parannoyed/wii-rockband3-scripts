@@ -39,6 +39,10 @@ Copy .app files and title.tmd into `files-app/sZXX` (except use the title you wa
 
 Run `python app2bin.py sZGE` and .bin files will be written in `files-bin/sZGE`
 
+### dta.py
+
+Basic DTA file parser. Based on https://github.com/RBTools/CON-Tools "C3 Tools/DTAParser.cs"
+
 ### unpacked2app.py
 
 Packs directories into .app files.
