@@ -25,6 +25,7 @@ def main(raw_option=None):
 
 	songs_old = []
 	songs_new = []
+	available_slots = []
 
 	for v in dir_list:
 		split_name = v.split('_')
@@ -48,44 +49,59 @@ def main(raw_option=None):
 					'name': song_name
 				})
 	
+	cur_index = 1
 	if songs_old:
 		for v in songs_old:
 			print('Existing song: ' + v['dir'])
-		cur_index = songs_old[-1]['index'] + 1
-	else:
-		cur_index = 1
+			if v['index'] > cur_index:
+				open_slot = (v['index'] - 1)
+				if open_slot - cur_index:
+					for i in range(cur_index, open_slot, 2):
+						available_slots.append([i, i + 1])
+				cur_index = v['index']
+			cur_index += 1
+	
+	for i in range(cur_index, 511, 2):
+		available_slots.append([i, i + 1])
 
-	for i in range(0, len(songs_new), 2):
-		if songs_new[i]['name'] != songs_new[i+1]['name']:
-			print('ERROR: mismatched song names')
-			print(songs_new[i]['dir'])
-			print(songs_new[i+1]['dir'])
+	print('')
+	print(len(available_slots), 'open song slots')
+
+	for i in range(0, len(available_slots)):
+		if songs_new:
+			meta = songs_new.pop(0)
+			song = songs_new.pop(0)
+		else:
 			return
-		if songs_new[i]['type'] != 'meta' or songs_new[i+1]['type'] != 'song':
+
+		if meta['name'] != song['name']:
+			print('ERROR: mismatched song names')
+			print(meta['dir'])
+			print(song['dir'])
+			return
+		if meta['type'] != 'meta' or song['type'] != 'song':
 			print('ERROR: mismatched directory types')
-			print(songs_new[i]['dir'])
-			print(songs_new[i+1]['dir'])
+			print(meta['dir'])
+			print(song['dir'])
 			return
 
 		# songs.dta
-		fn = os.path.join(in_dir, songs_new[i]['dir'], 'content', 'songs', 'songs.dta')
+		fn = os.path.join(in_dir, meta['dir'], 'content', 'songs', 'songs.dta')
 		if os.path.isfile(fn):
 			with open(fn, 'r', encoding='latin-1') as file :
 				data = file.read()
-			data = data.replace('sZAE/000', title_str + '/' + '{:03}'.format(cur_index))
+			data = data.replace('sZAE/000', title_str + '/' + '{:03}'.format(available_slots[i][0]))
 			with open(fn, 'w', newline='\r\n') as file:
 				file.write(data)
 
 		# meta
-		new_dir = '{:03}_{}_{}_{}'.format(cur_index, util.get_hex_str(cur_index, 4), songs_new[i]['name'], songs_new[i]['type'])
-		print(songs_new[i]['dir'] + ' to ' + new_dir)
-		os.rename(os.path.join(in_dir, songs_new[i]['dir']), os.path.join(in_dir, new_dir))
-		cur_index += 1
+		new_dir = '{:03}_{}_{}_{}'.format(available_slots[i][0], util.get_hex_str(available_slots[i][0], 4), meta['name'], meta['type'])
+		print(meta['dir'] + ' to ' + new_dir)
+		os.rename(os.path.join(in_dir, meta['dir']), os.path.join(in_dir, new_dir))
 		# song
-		new_dir = '{:03}_{}_{}_{}'.format(cur_index, util.get_hex_str(cur_index, 4), songs_new[i+1]['name'], songs_new[i+1]['type'])
-		print(songs_new[i+1]['dir'] + ' to ' + new_dir)
-		os.rename(os.path.join(in_dir, songs_new[i+1]['dir']), os.path.join(in_dir, new_dir))
-		cur_index += 1
+		new_dir = '{:03}_{}_{}_{}'.format(available_slots[i][1], util.get_hex_str(available_slots[i][1], 4), song['name'], song['type'])
+		print(song['dir'] + ' to ' + new_dir)
+		os.rename(os.path.join(in_dir, song['dir']), os.path.join(in_dir, new_dir))
 
 if __name__ == "__main__":
 	parser = ArgumentParser()
