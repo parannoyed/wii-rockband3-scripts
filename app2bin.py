@@ -9,7 +9,10 @@ from tmd import TMD
 import util
 from wad import DLCWAD
 
-def main(raw_option=None, console_id=None, pack_key=None):	
+rb2_us = ['sZAE', 'sZBE', 'sZCE', 'sZDE', 'sZEE', 'sZFE', 'sZGE', 'sZHE', 'sZIE']
+rb2_eu = ['sZAP', 'sZBP', 'sZCP', 'sZDP', 'sZEP', 'sZFP', 'sZGP', 'sZHP', 'sZIP']
+
+def main(raw_option=None):	
 	print('Rock Band 3 .BIN Packer')
 
 	if not raw_option:
@@ -18,6 +21,10 @@ def main(raw_option=None, console_id=None, pack_key=None):
 	option = raw_option[0].lower()
 	option += raw_option[1:].upper()
 	region = option[3:4]
+
+	pack_key = rb3_pack_key
+	if option in rb2_us or option in rb2_eu:
+		pack_key = rb2_pack_key
 
 	title_str = option
 	in_dir = os.path.join('files-app', title_str)
@@ -75,7 +82,7 @@ def main(raw_option=None, console_id=None, pack_key=None):
 				bin.create(data, 'SZB' + region, i, tmd, console_id)
 				print('File:  ' + binfilename + ', Size: ' + str(bin.get_file_size()) + ' bytes')
 				bin.write(binfilepath)
-	
+
 if __name__ == "__main__":
 	parser = ArgumentParser()
 	parser.add_argument(
@@ -92,11 +99,17 @@ if __name__ == "__main__":
 		f = open(fn, 'rb')
 		console_id = f.read()
 		console_id = console_id.decode('utf-8')
-	pack_key = None
-	fn = os.path.join('config', 'pack.txt')
+	rb2_pack_key = None
+	fn = os.path.join('config', 'pack_rb2.txt')
 	if os.path.isfile(fn):
 		f = open(fn, 'rb')
-		pack_key = f.read()
-		pack_key = pack_key.decode('utf-8')
+		rb2_pack_key = f.read()
+		rb2_pack_key = pack_key.decode('utf-8')
+	rb3_pack_key = None
+	fn = os.path.join('config', 'pack_rb3.txt')
+	if os.path.isfile(fn):
+		f = open(fn, 'rb')
+		rb3_pack_key = f.read()
+		rb3_pack_key = pack_key.decode('utf-8')
 	
-	main(arguments.title_str, console_id, pack_key)
+	main(arguments.title_str)

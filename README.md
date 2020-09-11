@@ -32,7 +32,7 @@ Run `python add-unpacked.py sZGE` and directories in `files-unpacked/sZGE` will 
 
 Packs .app files into .bin files.
 
-In config directory, set `console_id.txt` and `pack.txt`.
+In config directory, set `console_id.txt`, `pack_rb2.txt` and `pack_rb3.txt`.
 Rock Band 2 titles (sZA* to sZI*) use a null key (0000, etc) and Rock Band 3 titles (sZJ* and higher) use your unique PRNG key. Pack and unpack keys should be 16 bits (32 characters).
 
 Copy .app files and title.tmd into `files-app/sZXX` (except use the title you want to pack: sZGE, sZGP, etc)
