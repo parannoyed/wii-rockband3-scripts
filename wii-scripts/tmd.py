@@ -54,7 +54,6 @@ class TMD:
 		if data:
 			if size is None:
 				size = len(data)
-				print(size)
 			if sha1_hash is None:
 				sha1_hash = crypto.get_hash(data)
 
