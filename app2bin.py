@@ -104,12 +104,12 @@ if __name__ == "__main__":
 	if os.path.isfile(fn):
 		f = open(fn, 'rb')
 		rb2_pack_key = f.read()
-		rb2_pack_key = pack_key.decode('utf-8')
+		rb2_pack_key = rb2_pack_key.decode('utf-8')
 	rb3_pack_key = None
 	fn = os.path.join('config', 'pack_rb3.txt')
 	if os.path.isfile(fn):
 		f = open(fn, 'rb')
 		rb3_pack_key = f.read()
-		rb3_pack_key = pack_key.decode('utf-8')
+		rb3_pack_key = rb3_pack_key.decode('utf-8')
 	
 	main(arguments.title_str)
